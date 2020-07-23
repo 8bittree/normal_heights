@@ -1,5 +1,5 @@
 use clap::{Arg, App};
-use image::DynamicImage;
+use image::{DynamicImage, RgbImage};
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -26,6 +26,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn map_normals(img: &DynamicImage) -> DynamicImage {
-    img.clone()
+fn map_normals(img: &DynamicImage) -> RgbImage {
+    let img = img.clone().into_rgb();
+    img
 }
