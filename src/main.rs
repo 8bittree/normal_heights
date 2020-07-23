@@ -15,8 +15,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             .required(true))
         .get_matches();
 
-    let input = matches.value_of("INPUT").expect("No input file provided.");
-    let output = matches.value_of("OUTPUT").expect("No output file specified.");
+    let input = matches.value_of("INPUT").unwrap();
+    let output = matches.value_of("OUTPUT").unwrap();
 
     let img = image::open(input)?;
 
