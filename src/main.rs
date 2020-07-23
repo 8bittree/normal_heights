@@ -42,7 +42,7 @@ fn map_normals(img: &DynamicImage) -> RgbImage {
 /// 3 4 5
 /// 0 1 2
 /// edge pixels are duplicated when necessary
-fn get_adjacent_pixels(x: u32, y: u32, img: &RgbImage) -> Vec<u8> {
+fn get_adjacent_pixels(x: u32, y: u32, img: &RgbImage) -> Vec<f32> {
     let north = if y <= 0 {
         0
     } else {
@@ -66,15 +66,15 @@ fn get_adjacent_pixels(x: u32, y: u32, img: &RgbImage) -> Vec<u8> {
 
     let mut pixels = Vec::with_capacity(9);
 
-    pixels.push(img.get_pixel(west,south)[0]);
-    pixels.push(img.get_pixel(   x,south)[0]);
-    pixels.push(img.get_pixel(east,south)[0]);
-    pixels.push(img.get_pixel(west,    y)[0]);
-    pixels.push(img.get_pixel(   x,    y)[0]);
-    pixels.push(img.get_pixel(east,    y)[0]);
-    pixels.push(img.get_pixel(west,north)[0]);
-    pixels.push(img.get_pixel(   x,north)[0]);
-    pixels.push(img.get_pixel(east,north)[0]);
+    pixels.push((img.get_pixel(west,south)[0] as f32)/255.0);
+    pixels.push((img.get_pixel(   x,south)[0] as f32)/255.0);
+    pixels.push((img.get_pixel(east,south)[0] as f32)/255.0);
+    pixels.push((img.get_pixel(west,    y)[0] as f32)/255.0);
+    pixels.push((img.get_pixel(   x,    y)[0] as f32)/255.0);
+    pixels.push((img.get_pixel(east,    y)[0] as f32)/255.0);
+    pixels.push((img.get_pixel(west,north)[0] as f32)/255.0);
+    pixels.push((img.get_pixel(   x,north)[0] as f32)/255.0);
+    pixels.push((img.get_pixel(east,north)[0] as f32)/255.0);
 
     pixels
 }
