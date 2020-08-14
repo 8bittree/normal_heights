@@ -58,8 +58,8 @@ fn get_adjacent_pixels(x: u32, y: u32, img: &RgbImage) -> Vec<f32> {
     } else {
         x-1
     };
-    let east = if x >= (img.height()-1) {
-        img.height()-1
+    let east = if x >= (img.width()-1) {
+        img.width()-1
     } else {
         x+1
     };
