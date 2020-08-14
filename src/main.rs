@@ -1,10 +1,10 @@
-use clap::{Arg, App};
+use clap::{Arg, App, crate_version};
 use image::{DynamicImage, RgbImage};
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let matches = App::new("Normal Heights")
-        .version("0.1")
+        .version(crate_version!())
         .author("Jon O.")
         .about("Makes normal maps from height maps.")
         .arg(Arg::with_name("INPUT")
