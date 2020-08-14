@@ -29,12 +29,27 @@ fn main() -> Result<(), Box<dyn Error>> {
 fn map_normals(img: &DynamicImage) -> RgbImage {
     let img = img.clone().into_rgb();
     let mut normal_map = RgbImage::new(img.width(), img.height());
+    let strength = 6.0;
     for (x, y, p) in normal_map.enumerate_pixels_mut() {
-        println!("x: {}, y: {}, pixel: {:?}", x, y, p);
         let mut new_p = [0.0, 0.0, 0.0];
-        let adj_pixels = get_adjacent_pixels(x,y,&img);
+        let s = get_adjacent_pixels(x,y,&img);
+        new_p[0] = -(s[2]-s[0]+2.0*(s[5]-s[3])+s[8]-s[6]);
+        new_p[1] = -(s[6]-s[0]+2.0*(s[7]-s[1])+s[8]-s[2]);
+        new_p[2] = 1.0/strength;
+        let mut new_p = normalize(new_p);
+        new_p[0] = new_p[0] * 0.5 + 0.5;
+        new_p[1] = new_p[1] * 0.5 + 0.5;
+        new_p[2] = new_p[2] * 0.5 + 0.5;
+        p[0] = (new_p[0]*255.0) as u8;
+        p[1] = (new_p[1]*255.0) as u8;
+        p[2] = (new_p[2]*255.0) as u8;
     }
     normal_map
+}
+
+fn normalize(v: [f32;3]) -> [f32;3] {
+    let v_mag = (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]).sqrt();
+    [v[0]/v_mag, v[1]/v_mag, v[2]/v_mag]
 }
 
 /// pixel layout:
