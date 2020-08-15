@@ -1,14 +1,60 @@
-use image::{DynamicImage, RgbImage};
+use image::{DynamicImage, GrayImage, RgbImage};
+
+struct AdjPixels {
+    nw: f32, n : f32, ne: f32,
+     w: f32,           e: f32,
+    sw: f32, s : f32, se: f32,
+}
+
+impl AdjPixels {
+    /// edge pixels are duplicated when necessary
+    fn new(x: u32, y: u32, img: &GrayImage) -> Self {
+        let n = if y <= 0 { 0 } else { y-1 };
+        let s = if y >= (img.height()-1) { img.height()-1 } else { y+1 };
+        let w = if x <= 0 { 0 } else { x-1 };
+        let e = if x >= (img.width()-1) { img.width()-1 } else { x+1 };
+
+        AdjPixels {
+            nw: fetch_pixel(n,w,img),
+            n : fetch_pixel(n,x,img),
+            ne: fetch_pixel(n,e,img),
+             w: fetch_pixel(y,w,img),
+
+             e: fetch_pixel(y,e,img),
+            sw: fetch_pixel(s,w,img),
+            s : fetch_pixel(s,x,img),
+            se: fetch_pixel(s,e,img),
+        }
+    }
+
+    fn red(&self) -> f32 {
+        -(       self.se-self.sw
+          + 2.0*(self.e -self.w )
+          +      self.ne-self.nw
+        )
+    }
+
+    fn green(&self) -> f32 {
+        -(       self.nw-self.sw
+          + 2.0*(self.n -self.s )
+          +      self.ne-self.se
+        )
+    }
+}
+
+fn fetch_pixel(y: u32, x: u32, img: &GrayImage) -> f32 {
+    (img.get_pixel(x,y)[0] as f32)/255.0
+}
 
 pub fn map_normals(img: &DynamicImage) -> RgbImage {
-    let img = img.clone().into_rgb();
+    let img = img.clone().into_luma();
     let mut normal_map = RgbImage::new(img.width(), img.height());
     let strength = 6.0;
     for (x, y, p) in normal_map.enumerate_pixels_mut() {
         let mut new_p = [0.0, 0.0, 0.0];
-        let s = get_adjacent_pixels(x,y,&img);
-        new_p[0] = -(s[2]-s[0]+2.0*(s[5]-s[3])+s[8]-s[6]);
-        new_p[1] = -(s[6]-s[0]+2.0*(s[7]-s[1])+s[8]-s[2]);
+        let s = AdjPixels::new(x,y,&img);
+        new_p[0] = s.red();
+        new_p[1] = s.green();
         new_p[2] = 1.0/strength;
         let mut new_p = normalize(new_p);
         new_p[0] = new_p[0] * 0.5 + 0.5;
@@ -24,46 +70,4 @@ pub fn map_normals(img: &DynamicImage) -> RgbImage {
 fn normalize(v: [f32;3]) -> [f32;3] {
     let v_mag = (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]).sqrt();
     [v[0]/v_mag, v[1]/v_mag, v[2]/v_mag]
-}
-
-/// pixel layout:
-/// 6 7 8
-/// 3 4 5
-/// 0 1 2
-/// edge pixels are duplicated when necessary
-fn get_adjacent_pixels(x: u32, y: u32, img: &RgbImage) -> Vec<f32> {
-    let north = if y <= 0 {
-        0
-    } else {
-        y-1
-    };
-    let south = if y >= (img.height()-1) {
-        img.height()-1
-    } else {
-        y+1
-    };
-    let west = if x <= 0 {
-        0
-    } else {
-        x-1
-    };
-    let east = if x >= (img.width()-1) {
-        img.width()-1
-    } else {
-        x+1
-    };
-
-    let mut pixels = Vec::with_capacity(9);
-
-    pixels.push((img.get_pixel(west,south)[0] as f32)/255.0);
-    pixels.push((img.get_pixel(   x,south)[0] as f32)/255.0);
-    pixels.push((img.get_pixel(east,south)[0] as f32)/255.0);
-    pixels.push((img.get_pixel(west,    y)[0] as f32)/255.0);
-    pixels.push((img.get_pixel(   x,    y)[0] as f32)/255.0);
-    pixels.push((img.get_pixel(east,    y)[0] as f32)/255.0);
-    pixels.push((img.get_pixel(west,north)[0] as f32)/255.0);
-    pixels.push((img.get_pixel(   x,north)[0] as f32)/255.0);
-    pixels.push((img.get_pixel(east,north)[0] as f32)/255.0);
-
-    pixels
 }
