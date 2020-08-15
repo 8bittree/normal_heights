@@ -46,10 +46,14 @@ fn fetch_pixel(y: u32, x: u32, img: &GrayImage) -> f32 {
     (img.get_pixel(x,y)[0] as f32)/255.0
 }
 
+/// Uses a default strength of 6.0
 pub fn map_normals(img: &DynamicImage) -> RgbImage {
+    map_normals_with_strength(img, 6.0)
+}
+
+pub fn map_normals_with_strength(img: &DynamicImage, strength: f32) -> RgbImage {
     let img = img.clone().into_luma();
     let mut normal_map = RgbImage::new(img.width(), img.height());
-    let strength = 6.0;
     for (x, y, p) in normal_map.enumerate_pixels_mut() {
         let mut new_p = [0.0, 0.0, 0.0];
         let s = AdjPixels::new(x,y,&img);
