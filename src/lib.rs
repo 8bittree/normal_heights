@@ -27,6 +27,8 @@ impl AdjPixels {
         }
     }
 
+    /// Calculates the normals along the x-axis. Usually used for the red
+    /// channel after normalization..
     fn x_normals(&self) -> f32 {
         -(       self.se-self.sw
           + 2.0*(self.e -self.w )
@@ -34,6 +36,8 @@ impl AdjPixels {
         )
     }
 
+    /// Calculates the normals along the y-axis. Usually used for the green
+    /// channel after normalization.
     fn y_normals(&self) -> f32 {
         -(       self.nw-self.sw
           + 2.0*(self.n -self.s )
@@ -42,15 +46,20 @@ impl AdjPixels {
     }
 }
 
+/// Fetches the pixel at (x,y) and returns its value as an f32 scaled to between
+/// 0.0 and 1.0. Coordinate parameters are reversed from usual to better match
+///   compass directions.
 fn fetch_pixel(y: u32, x: u32, img: &GrayImage) -> f32 {
     (img.get_pixel(x,y)[0] as f32)/255.0
 }
 
-/// Uses a default strength of 6.0
+/// Creates the normal mapping from the given image with a default strength of
+/// 6.0.
 pub fn map_normals(img: &DynamicImage) -> RgbImage {
     map_normals_with_strength(img, 6.0)
 }
 
+/// Creates the normal mapping from the given image with the given strength.
 pub fn map_normals_with_strength(img: &DynamicImage, strength: f32) -> RgbImage {
     let img = img.clone().into_luma();
     let mut normal_map = RgbImage::new(img.width(), img.height());
