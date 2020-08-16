@@ -49,3 +49,8 @@ ARGS:
 ```sh
     normal-heights heightmap.png normalmap.png
 ```
+
+Supported Image Formats
+-----------------------
+
+See Image crate, [version 0.23.7](https://github.com/image-rs/image/tree/78568491ed6504c01cdbacbcfc87bd1c5d61fa52#21-supported-image-formats).
