@@ -27,14 +27,14 @@ impl AdjPixels {
         }
     }
 
-    fn red(&self) -> f32 {
+    fn x_normals(&self) -> f32 {
         -(       self.se-self.sw
           + 2.0*(self.e -self.w )
           +      self.ne-self.nw
         )
     }
 
-    fn green(&self) -> f32 {
+    fn y_normals(&self) -> f32 {
         -(       self.nw-self.sw
           + 2.0*(self.n -self.s )
           +      self.ne-self.se
@@ -57,8 +57,8 @@ pub fn map_normals_with_strength(img: &DynamicImage, strength: f32) -> RgbImage 
     for (x, y, p) in normal_map.enumerate_pixels_mut() {
         let mut new_p = [0.0, 0.0, 0.0];
         let s = AdjPixels::new(x,y,&img);
-        new_p[0] = s.red();
-        new_p[1] = s.green();
+        new_p[0] = s.x_normals();
+        new_p[1] = s.y_normals();
         new_p[2] = 1.0/strength;
         let mut new_p = normalize(new_p);
         new_p[0] = new_p[0] * 0.5 + 0.5;
