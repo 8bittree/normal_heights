@@ -70,16 +70,17 @@ pub fn map_normals(img: &DynamicImage) -> RgbImage {
 pub fn map_normals_with_strength(img: &DynamicImage, strength: f32) -> RgbImage {
     let img = img.clone().into_luma();
     let mut normal_map = RgbImage::new(img.width(), img.height());
+
     for (x, y, p) in normal_map.enumerate_pixels_mut() {
         let mut new_p = [0.0, 0.0, 0.0];
         let s = AdjPixels::new(x,y,&img);
+
         new_p[0] = s.x_normals();
         new_p[1] = s.y_normals();
         new_p[2] = 1.0/strength;
-        let mut new_p = normalize(new_p);
-        new_p[0] = new_p[0] * 0.5 + 0.5;
-        new_p[1] = new_p[1] * 0.5 + 0.5;
-        new_p[2] = new_p[2] * 0.5 + 0.5;
+
+        let new_p = scale_normalized_to_0_to_1(&normalize(new_p));
+
         p[0] = (new_p[0]*255.0) as u8;
         p[1] = (new_p[1]*255.0) as u8;
         p[2] = (new_p[2]*255.0) as u8;
@@ -90,4 +91,12 @@ pub fn map_normals_with_strength(img: &DynamicImage, strength: f32) -> RgbImage 
 fn normalize(v: [f32;3]) -> [f32;3] {
     let v_mag = (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]).sqrt();
     [v[0]/v_mag, v[1]/v_mag, v[2]/v_mag]
+}
+
+fn scale_normalized_to_0_to_1(v: &[f32;3]) -> [f32;3] {
+    [
+        v[0] * 0.5 + 0.5,
+        v[1] * 0.5 + 0.5,
+        v[2] * 0.5 + 0.5,
+    ]
 }
