@@ -24,7 +24,7 @@ Example Library Usage
 CLI Wrapper
 -----------
 
-###Help String
+### Help String
 
 ```
 USAGE:
@@ -44,7 +44,7 @@ ARGS:
     <OUTPUT>    Filename to write the normal map to.
 ```
 
-###Example Usage
+### Example Usage
 
 ```sh
     normal-heights heightmap.png normalmap.png
