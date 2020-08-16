@@ -2,9 +2,10 @@ use clap::{Arg, App, crate_version};
 use std::error::Error;
 use std::str::FromStr;
 
-use normal_heights::map_normals_with_strength;
+use normal_heights::{DEFAULT_STRENGTH, map_normals_with_strength};
 
 fn main() -> Result<(), Box<dyn Error>> {
+    let default_strength = DEFAULT_STRENGTH.to_string();
     let matches = App::new("Normal Heights")
         .version(crate_version!())
         .author("Jon O.")
@@ -20,7 +21,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             .next_line_help(true)
             .short("s")
             .long("strength")
-            .default_value("6.0")
+            .default_value(&default_strength)
             .validator(strength_validator))
         .get_matches();
 

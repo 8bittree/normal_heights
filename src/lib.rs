@@ -1,5 +1,12 @@
 use image::{DynamicImage, GrayImage, RgbImage};
 
+// Why 6.0? Because that was the whole number that gave the closest results to
+// the topographic map and normal map I was using as reference material.
+// Considering my primary intent for creating this library is to create
+// alternatives to those two files to use in the program they came with, it
+// seemed like a good idea to match them, at least approximately.
+pub const DEFAULT_STRENGTH: f32 = 6.0;
+
 struct AdjPixels {
     nw: f32, n : f32, ne: f32,
      w: f32,           e: f32,
@@ -53,10 +60,10 @@ fn fetch_pixel(y: u32, x: u32, img: &GrayImage) -> f32 {
     (img.get_pixel(x,y)[0] as f32)/255.0
 }
 
-/// Creates the normal mapping from the given image with a default strength of
-/// 6.0.
+/// Creates the normal mapping from the given image with
+/// [DEFAULT_STRENGTH](constant.DEFAULT_STRENGTH.html)
 pub fn map_normals(img: &DynamicImage) -> RgbImage {
-    map_normals_with_strength(img, 6.0)
+    map_normals_with_strength(img, DEFAULT_STRENGTH)
 }
 
 /// Creates the normal mapping from the given image with the given strength.
