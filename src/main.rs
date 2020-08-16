@@ -32,7 +32,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let img = image::open(input)?;
 
     let normal_map = map_normals_with_strength(&img, strength);
-    normal_map.save(output).unwrap();
+
+    normal_map.save(output)?;
 
     Ok(())
 }

@@ -11,15 +11,17 @@ Example Library Usage
 ```rust
     let img = image::open(input)?;
     let normal_map = normal_heights::map_normals(&img);
-    normal_map.save(output).unwrap();
+    normal_map.save(output)?;
 ```
 
 ```rust
     let img = image::open(input)?;
     let strength = 3.14;
     let normal_map = normal_heights::map_normals_with_strength(&img, strength);
-    normal_map.save(output).unwrap();
+    normal_map.save(output)?;
 ```
+
+For a fully executable example, see src/main.rs.
 
 CLI Wrapper
 -----------
