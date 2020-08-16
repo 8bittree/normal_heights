@@ -21,3 +21,31 @@ Example Library Usage
     normal_map.save(output).unwrap();
 ```
 
+CLI Wrapper
+-----------
+
+###Help String
+
+```
+USAGE:
+    normal-heights [OPTIONS] <INPUT> <OUTPUT>
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -s, --strength <strength>
+            Strength of the resulting normal map. [default: 6.0]
+
+
+ARGS:
+    <INPUT>     Input height map image file.
+    <OUTPUT>    Filename to write the normal map to.
+```
+
+###Example Usage
+
+```sh
+    normal-heights heightmap.png normalmap.png
+```
