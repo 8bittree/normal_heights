@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let default_strength = DEFAULT_STRENGTH.to_string();
     let matches = App::new("Normal Heights")
         .version(crate_version!())
-        .author("Jon O.")
+        .author("Jon Olin")
         .about("Makes normal maps from height maps.")
         .arg(Arg::with_name("INPUT")
             .help("Input height map image file.")
