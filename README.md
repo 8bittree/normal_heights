@@ -56,3 +56,30 @@ Supported Image Formats
 -----------------------
 
 See Image crate, [version 0.23.7](https://github.com/image-rs/image/tree/78568491ed6504c01cdbacbcfc87bd1c5d61fa52#21-supported-image-formats).
+
+Example Output
+--------------
+
+### Misc shapes:
+
+Input:
+
+![Input shapes heightmap](samples/shapes.bmp)
+
+Output (strength 3.14):
+
+![shapes normal map with strength 3.14](samples/shapes_normal_strength_3.14.png)
+
+Output (strength 8):
+
+![shapes normal map with strength 8](samples/shapes_normal_strength_8.png)
+
+### World:
+
+Input:
+
+![Input world heightmap](samples/gebco_08_rev_elev_1080x540.png)
+
+Output (default strength 6):
+
+![world normal map with default strength 6](samples/gebco_08_rev_elev_1080x540_normal.png)
