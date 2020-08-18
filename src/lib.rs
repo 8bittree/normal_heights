@@ -15,6 +15,7 @@ struct AdjPixels {
 
 impl AdjPixels {
     /// edge pixels are duplicated when necessary
+    #[allow(clippy::many_single_char_names, clippy::absurd_extreme_comparisons)]
     fn new(x: u32, y: u32, img: &GrayImage) -> Self {
         let n = if y <= 0 { 0 } else { y-1 };
         let s = if y >= (img.height()-1) { img.height()-1 } else { y+1 };
