@@ -101,3 +101,20 @@ fn scale_normalized_to_0_to_1(v: &[f32;3]) -> [f32;3] {
         v[2] * 0.5 + 0.5,
     ]
 }
+
+#[cfg(test)]
+mod tests {
+    use super::map_normals_with_strength;
+
+    #[test]
+    fn shapes_bmp_regression_test() {
+        let height_map = image::open("./samples/shapes.bmp").unwrap();
+        let test_normal = map_normals_with_strength(&height_map, 3.14);
+        let reference_normal = image::open("./samples/shapes_normal_strength_3.14.png").unwrap().into_rgb();
+        assert_eq!(reference_normal.width(), test_normal.width());
+        assert_eq!(reference_normal.height(), test_normal.height());
+        for (ref_pixel, test_pixel) in reference_normal.pixels().zip(test_normal.pixels()) {
+            assert_eq!(ref_pixel, test_pixel);
+        }
+    }
+}
