@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2023-03-11
+### Added
+ - Add regression test
+### Changed
+ - Change edition to 2021
+ - Update image to 0.23.14
+
 ## [0.1.1] - 2020-08-20
 ### Added
  - Sample images
