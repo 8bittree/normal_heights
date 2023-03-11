@@ -69,7 +69,7 @@ pub fn map_normals(img: &DynamicImage) -> RgbImage {
 
 /// Creates the normal mapping from the given image with the given strength.
 pub fn map_normals_with_strength(img: &DynamicImage, strength: f32) -> RgbImage {
-    let img = img.clone().into_luma();
+    let img = img.clone().into_luma8();
     let mut normal_map = RgbImage::new(img.width(), img.height());
 
     for (x, y, p) in normal_map.enumerate_pixels_mut() {
@@ -110,7 +110,7 @@ mod tests {
     fn shapes_bmp_regression_test() {
         let height_map = image::open("./samples/shapes.bmp").unwrap();
         let test_normal = map_normals_with_strength(&height_map, 3.14);
-        let reference_normal = image::open("./samples/shapes_normal_strength_3.14.png").unwrap().into_rgb();
+        let reference_normal = image::open("./samples/shapes_normal_strength_3.14.png").unwrap().into_rgb8();
         assert_eq!(reference_normal.width(), test_normal.width());
         assert_eq!(reference_normal.height(), test_normal.height());
         for (ref_pixel, test_pixel) in reference_normal.pixels().zip(test_normal.pixels()) {
