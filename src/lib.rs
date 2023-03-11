@@ -117,4 +117,16 @@ mod tests {
             assert_eq!(ref_pixel, test_pixel);
         }
     }
+
+    #[test]
+    fn world_regression_test() {
+        let height_map = image::open("./samples/gebco_08_rev_elev_1080x540.png").unwrap();
+        let test_normal = map_normals_with_strength(&height_map, 6.0);
+        let reference_normal = image::open("./samples/gebco_08_rev_elev_1080x540_normal.png").unwrap().into_rgb8();
+        assert_eq!(reference_normal.width(), test_normal.width());
+        assert_eq!(reference_normal.height(), test_normal.height());
+        for (ref_pixel, test_pixel) in reference_normal.pixels().zip(test_normal.pixels()) {
+            assert_eq!(ref_pixel, test_pixel);
+        }
+    }
 }
