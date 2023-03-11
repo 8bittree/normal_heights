@@ -64,7 +64,7 @@ Example Output
 
 Input:
 
-![Input shapes heightmap](samples/shapes.bmp)
+![Input shapes heightmap](samples/shapes.png)
 
 Output (strength 3.14):
 
